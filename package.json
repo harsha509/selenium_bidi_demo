@@ -1,0 +1,25 @@
+{
+  "name": "selenium_bidi_demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harsha509/selenium_bidi_demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/harsha509/selenium_bidi_demo/issues"
+  },
+  "homepage": "https://github.com/harsha509/selenium_bidi_demo#readme",
+  "dependencies": {
+    "chromedriver": "^108.0.0",
+    "mocha": "^10.2.0",
+    "selenium-webdriver": "^4.7.1",
+    "wd-bidi": "^0.0.3"
+  }
+}
