@@ -2,9 +2,9 @@ require('chromedriver');
 const {Builder} = require('selenium-webdriver');
 const Chrome= require('selenium-webdriver/chrome');
 const opts = new Chrome.Options();
-const { BiDi, Session} = require('wd-bidi');
+const {BiDi, BrowsingContext } = require('wd-bidi');
 
-describe('Sample Bidi tests', ()=> {
+describe('BrowserContext: Sample Bidi tests', ()=> {
   let driver;
 
   before(async ()=> {
@@ -14,26 +14,21 @@ describe('Sample Bidi tests', ()=> {
       .build();
   })
 
-  it('should listen to log events', async () => {
+  it('should listen browserContext events', async () => {
     const caps = await driver.getCapabilities();
     let WebSocketUrl = caps['map_'].get('webSocketUrl')
     const conn = new BiDi(WebSocketUrl.replace('localhost', '127.0.0.1'));
 
-    // Subscribe to log events
-    let subEvent= { events: ['log.entryAdded'] }
-    const session = new Session(conn);
-    await session.subscribe(subEvent)
+    // Subscribe to events
+    const browsingContext = new BrowsingContext(conn);
+    await browsingContext.events.contextCreated();
 
-    // trigger an event
-    await driver.executeScript('console.log("Hello Bidi")', [])
+    // create a tab
+    await browsingContext.create({type: 'tab'})
 
-    // listen to logEvent message and print
-    conn.getConnection.on('message', (data) => {
-      console.log(JSON.parse(Buffer.from(data.toString())))
-    })
+    // print the subscription result
+    console.log(await browsingContext.events.eventSubscriptionData)
   })
 
   after(async ()=> await driver.quit())
-
 })
-
