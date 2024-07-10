@@ -4,7 +4,7 @@ const Chrome= require('selenium-webdriver/chrome');
 const opts = new Chrome.Options();
 const {BiDi, BrowsingContext } = require('wd-bidi');
 
-describe('BrowserContext: Sample Bidi tests', ()=> {
+describe('BrowserContext: Create and listen to event', ()=> {
   let driver;
 
   before(async ()=> {

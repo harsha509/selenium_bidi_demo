@@ -2,9 +2,9 @@ require('chromedriver');
 const {Builder} = require('selenium-webdriver');
 const Chrome= require('selenium-webdriver/chrome');
 const opts = new Chrome.Options();
-const { BiDi, Session } = require('wd-bidi');
+const {BiDi, Browser} = require('wd-bidi');
 
-describe('Session: get status and end session', ()=> {
+describe('BrowserContext: Sample Bidi tests', ()=> {
   let driver;
 
   before(async ()=> {
@@ -14,15 +14,15 @@ describe('Session: get status and end session', ()=> {
       .build();
   })
 
-  it('should listen session', async () => {
+  it('should perform browser close', async () => {
     const caps = await driver.getCapabilities();
     let WebSocketUrl = caps['map_'].get('webSocketUrl')
     const conn = new BiDi(WebSocketUrl.replace('localhost', '127.0.0.1'));
-    const session = new Session(conn);
-    console.log(await session.status)
-    await session.endSession();
+
+    // Subscribe to events
+    const browser = new Browser(conn);
+    await browser.close();
   })
 
   after(async ()=> await driver.quit())
 })
-
