@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha spec/*.spec.js"
+    "test": "mocha -t 600000 spec/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,6 @@
     "chromedriver": "^126.0.4",
     "mocha": "^10.6.0",
     "selenium-webdriver": "^4.22.0",
-    "wd-bidi": "0.0.4-alpha-5"
+    "wd-bidi": "0.0.4-alpha-8"
   }
 }
