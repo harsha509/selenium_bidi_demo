@@ -1,10 +1,10 @@
 require('chromedriver');
-const {Builder} = require('selenium-webdriver');
+const {Builder, By} = require('selenium-webdriver');
 const Chrome= require('selenium-webdriver/chrome');
 const opts = new Chrome.Options();
-const { BiDi, Session} = require('wd-bidi');
+const { Session, BiDi, Log} = require('wd-bidi');
 
-describe('Session: Log entry added', ()=> {
+describe('Sample Bidi tests', ()=> {
   let driver;
 
   before(async ()=> {
@@ -18,22 +18,33 @@ describe('Session: Log entry added', ()=> {
     const caps = await driver.getCapabilities();
     let WebSocketUrl = caps['map_'].get('webSocketUrl')
     const conn = new BiDi(WebSocketUrl.replace('localhost', '127.0.0.1'));
+    const log = new Log(conn);
 
     // Subscribe to log events
-    let subEvent= { events: ['log.entryAdded'] }
-    const session = new Session(conn);
-    await session.subscribe(subEvent)
+    await log.events.entryAdded();
 
-    // trigger an event
-    await driver.executeScript('console.log("Hello Bidi")', [])
+    await driver.get('https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html');
 
-    // listen to logEvent message and print
-    conn.getConnection.on('message', (data) => {
-      console.log(JSON.parse(Buffer.from(data.toString())))
-    })
+    //generic log
+    await driver.findElement(By.id('consoleLog')).click();
+    await driver.sleep(1000);
+    console.log(log.events.eventSubscriptionData)
+
+    // console error
+    await driver.findElement(By.id('consoleError')).click();
+    await driver.sleep(1000);
+    console.log(log.events.eventSubscriptionData)
+
+    //js exception
+    await driver.findElement(By.id('jsException')).click();
+    await driver.sleep(1000);
+    console.log(log.events.eventSubscriptionData)
+
+    // log with stacktrace
+    await driver.findElement(By.id('logWithStacktrace')).click();
+    await driver.sleep(1000);
+    console.log(log.events.eventSubscriptionData);
   })
 
   after(async ()=> await driver.quit())
-
 })
-

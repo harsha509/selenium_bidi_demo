@@ -21,6 +21,7 @@ describe('BrowserContext: Sample Bidi tests', ()=> {
 
     // Subscribe to events
     const browser = new Browser(conn);
+    console.log(await browser.userContexts)
     await browser.close();
   })
 
